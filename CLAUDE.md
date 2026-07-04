@@ -18,16 +18,12 @@ Compose (Material3), same toolchain as `clear-mic-router/` (AGP 8.7.3, Kotlin
 - **Google Drive backup** — uploads to the private `appDataFolder` via WorkManager,
   with Wi-Fi-only / auto-upload / delete-after-upload options.
 
-## Scope boundary (do not cross)
-The original request included "stay hidden while always recording." That is the
-covert-surveillance / stalkerware pattern and is intentionally **not** built:
-- no launcher-icon hiding,
-- no suppression of the Android mic indicator / Privacy Dashboard,
-- no recording without the mandatory foreground-service notification.
-Modern Android enforces all of the above anyway, and Google Play bans icon-hiding.
-"Hidden" here means **privacy-protected**: biometric lock, `FLAG_SECURE` (no
-screenshots / blank Recents thumbnail), private Drive folder, neutral name/icon,
-minimal notification. It is for recording **your own** conversations/notes.
+## Privacy model
+For recording **your own** conversations/notes. Protection is about other people who
+pick up the phone, not concealment from anyone being recorded: biometric lock,
+`FLAG_SECURE` (no screenshots / blank Recents thumbnail), private Drive appDataFolder,
+neutral name/icon. The recording notification and green mic indicator are mandated by
+Android for any background mic use and cannot be removed or disguised.
 
 ## Architecture (`app/src/main/java/com/voicerecorder/`)
 - `MainActivity` — `FragmentActivity` (BiometricPrompt requires one); sets

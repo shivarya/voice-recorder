@@ -27,20 +27,13 @@ them up to a private Google Drive folder.
   your normal Drive), with Wi-Fi-only, auto-upload, and delete-after-upload options.
 - 🎨 Jetpack Compose UI with Material 3 dynamic color.
 
-## Not a spy tool — by design
+## Transparency
 
-This is a recorder for **your own** conversations and notes. It deliberately does
-**not** hide, and could not even if it tried:
-
-- **No hidden icon, no invisible recording.** Android *requires* a persistent
-  notification for any background microphone use (since Android 9), shows a mandatory
-  green mic indicator (Android 12+), and removed launcher-icon hiding (Android 8+).
-  Google Play bans stalkerware and icon-hiding outright.
-- "Private" here means **protected from other people who pick up your phone**
-  (biometric lock, secure window, private cloud folder) — never *hidden from the
-  person being recorded*.
-
-Recording people without their consent may be illegal where you live. Please don't.
+This is a recorder for **your own** conversations and notes. While recording, Android
+always shows a persistent notification and a green microphone indicator — these are
+enforced by the operating system for any app that uses the mic in the background and
+cannot be removed. Recording people without their consent may be illegal where you
+live.
 
 ## Build
 
