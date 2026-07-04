@@ -43,7 +43,9 @@ minimal notification. It is for recording **your own** conversations/notes.
 - `tile/RecordTileService` — Quick Settings one-tap toggle.
 - `audio/Recorder` — `MediaRecorder` wrapper.
 - `core/RecordingState` — process-wide `StateFlow` singleton (recording/elapsed/file).
-- `core/Prefs` — `SharedPreferences` wrapper (settings + Drive account).
+- `core/Prefs` — `SharedPreferences` wrapper (settings incl. `autoStartOnOpen` +
+  Drive account). `autoStartOnOpen` (opt-in, default off) makes `MainActivity` begin
+  recording on open/unlock via `maybeAutoStart()` — the literal "always record" mode.
 - `storage/RecordingStore` — files in `filesDir/recordings/`; upload-state tracking.
 - `security/BiometricGate` — `BiometricPrompt` wrapper.
 - `drive/DriveAuth` — Google sign-in (scope `DRIVE_APPDATA`) + Drive client factory.

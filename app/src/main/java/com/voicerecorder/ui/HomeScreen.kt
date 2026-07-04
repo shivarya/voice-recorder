@@ -71,6 +71,7 @@ fun HomeScreen(
     playingName: String?,
     driveEmail: String?,
     resumeOnBoot: Boolean,
+    autoStartOnOpen: Boolean,
     autoUpload: Boolean,
     wifiOnly: Boolean,
     deleteAfterUpload: Boolean,
@@ -81,6 +82,7 @@ fun HomeScreen(
     onSignOut: () -> Unit,
     onSyncNow: () -> Unit,
     onSetResumeOnBoot: (Boolean) -> Unit,
+    onSetAutoStartOnOpen: (Boolean) -> Unit,
     onSetAutoUpload: (Boolean) -> Unit,
     onSetWifiOnly: (Boolean) -> Unit,
     onSetDeleteAfterUpload: (Boolean) -> Unit,
@@ -99,8 +101,8 @@ fun HomeScreen(
             }
             item {
                 SettingsCard(
-                    resumeOnBoot, autoUpload, wifiOnly, deleteAfterUpload,
-                    onSetResumeOnBoot, onSetAutoUpload, onSetWifiOnly, onSetDeleteAfterUpload,
+                    resumeOnBoot, autoStartOnOpen, autoUpload, wifiOnly, deleteAfterUpload,
+                    onSetResumeOnBoot, onSetAutoStartOnOpen, onSetAutoUpload, onSetWifiOnly, onSetDeleteAfterUpload,
                 )
             }
             item {
@@ -198,10 +200,12 @@ private fun DriveCard(
 @Composable
 private fun SettingsCard(
     resumeOnBoot: Boolean,
+    autoStartOnOpen: Boolean,
     autoUpload: Boolean,
     wifiOnly: Boolean,
     deleteAfterUpload: Boolean,
     onSetResumeOnBoot: (Boolean) -> Unit,
+    onSetAutoStartOnOpen: (Boolean) -> Unit,
     onSetAutoUpload: (Boolean) -> Unit,
     onSetWifiOnly: (Boolean) -> Unit,
     onSetDeleteAfterUpload: (Boolean) -> Unit,
@@ -209,6 +213,7 @@ private fun SettingsCard(
     Card(Modifier.fillMaxWidth()) {
         Column(Modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
             Text("Settings", style = MaterialTheme.typography.titleMedium)
+            ToggleRow("Auto-start recording when app opens", autoStartOnOpen, onSetAutoStartOnOpen)
             ToggleRow("Auto-upload each segment", autoUpload, onSetAutoUpload)
             ToggleRow("Upload on Wi-Fi only", wifiOnly, onSetWifiOnly)
             ToggleRow("Delete local file after upload", deleteAfterUpload, onSetDeleteAfterUpload)

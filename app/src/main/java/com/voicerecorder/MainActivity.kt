@@ -47,6 +47,7 @@ class MainActivity : FragmentActivity() {
     private val playingName = mutableStateOf<String?>(null)
 
     private val resumeOnBoot = mutableStateOf(false)
+    private val autoStartOnOpen = mutableStateOf(false)
     private val autoUpload = mutableStateOf(false)
     private val wifiOnly = mutableStateOf(true)
     private val deleteAfterUpload = mutableStateOf(false)
@@ -71,6 +72,7 @@ class MainActivity : FragmentActivity() {
 
         driveEmail.value = prefs.driveAccount ?: DriveAuth.lastAccount(this)?.email
         resumeOnBoot.value = prefs.resumeOnBoot
+        autoStartOnOpen.value = prefs.autoStartOnOpen
         autoUpload.value = prefs.autoUpload
         wifiOnly.value = prefs.wifiOnlyUpload
         deleteAfterUpload.value = prefs.deleteAfterUpload
@@ -90,6 +92,7 @@ class MainActivity : FragmentActivity() {
                         playingName = playingName.value,
                         driveEmail = driveEmail.value,
                         resumeOnBoot = resumeOnBoot.value,
+                        autoStartOnOpen = autoStartOnOpen.value,
                         autoUpload = autoUpload.value,
                         wifiOnly = wifiOnly.value,
                         deleteAfterUpload = deleteAfterUpload.value,
@@ -100,6 +103,7 @@ class MainActivity : FragmentActivity() {
                         onSignOut = ::signOut,
                         onSyncNow = ::syncNow,
                         onSetResumeOnBoot = { prefs.resumeOnBoot = it; resumeOnBoot.value = it },
+                        onSetAutoStartOnOpen = { prefs.autoStartOnOpen = it; autoStartOnOpen.value = it },
                         onSetAutoUpload = { prefs.autoUpload = it; autoUpload.value = it },
                         onSetWifiOnly = { prefs.wifiOnlyUpload = it; wifiOnly.value = it },
                         onSetDeleteAfterUpload = { prefs.deleteAfterUpload = it; deleteAfterUpload.value = it },
@@ -115,7 +119,10 @@ class MainActivity : FragmentActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (unlocked.value) refresh()
+        if (unlocked.value) {
+            refresh()
+            maybeAutoStart()
+        }
     }
 
     override fun onDestroy() {
@@ -129,6 +136,7 @@ class MainActivity : FragmentActivity() {
             onSuccess = {
                 unlocked.value = true
                 refresh()
+                maybeAutoStart()
             },
             onError = { /* stays locked; user can retry via the Unlock button */ },
         )
@@ -136,6 +144,17 @@ class MainActivity : FragmentActivity() {
 
     private fun refresh() {
         recordings.value = RecordingStore.list(this)
+    }
+
+    /**
+     * Opt-in: begin recording as soon as the app is opened/unlocked. Silently no-ops if
+     * already recording or if the mic permission hasn't been granted yet (we don't force
+     * a permission prompt on open).
+     */
+    private fun maybeAutoStart() {
+        if (autoStartOnOpen.value && !RecordingState.recording.value && hasMic()) {
+            RecordingService.start(this)
+        }
     }
 
     // --- recording ---------------------------------------------------------

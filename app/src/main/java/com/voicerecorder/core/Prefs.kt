@@ -12,6 +12,11 @@ class Prefs(context: Context) {
         get() = sp.getBoolean(KEY_RESUME_ON_BOOT, false)
         set(value) = sp.edit().putBoolean(KEY_RESUME_ON_BOOT, value).apply()
 
+    /** Start recording automatically whenever the app is opened/unlocked. */
+    var autoStartOnOpen: Boolean
+        get() = sp.getBoolean(KEY_AUTO_START_ON_OPEN, false)
+        set(value) = sp.edit().putBoolean(KEY_AUTO_START_ON_OPEN, value).apply()
+
     /** Auto-upload each finished segment to Google Drive. */
     var autoUpload: Boolean
         get() = sp.getBoolean(KEY_AUTO_UPLOAD, false)
@@ -34,6 +39,7 @@ class Prefs(context: Context) {
 
     companion object {
         private const val KEY_RESUME_ON_BOOT = "resume_on_boot"
+        private const val KEY_AUTO_START_ON_OPEN = "auto_start_on_open"
         private const val KEY_AUTO_UPLOAD = "auto_upload"
         private const val KEY_WIFI_ONLY = "wifi_only"
         private const val KEY_DELETE_AFTER_UPLOAD = "delete_after_upload"

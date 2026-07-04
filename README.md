@@ -14,7 +14,9 @@ them up to a private Google Drive folder.
 
 - 🎙️ **Background recording** — a microphone foreground service keeps recording while
   the app is closed, the screen is off, and through Doze. Audio is split into
-  15-minute segments so a crash costs you at most one segment.
+  15-minute segments so a crash costs you at most one segment. An **opt-in
+  "auto-start when the app opens"** setting makes it begin recording the moment you
+  launch/unlock the app, for a hands-off always-on workflow.
 - 🗣️ **Voice-optimized** — mono AAC (`.m4a`) at 16 kHz / 64 kbps: clear speech, small files.
 - ⚡ **One-tap start/stop** — a Quick Settings tile and a home-screen shortcut start
   recording without opening the app.
