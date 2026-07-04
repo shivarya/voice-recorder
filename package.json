@@ -1,0 +1,13 @@
+{
+  "name": "voice-recorder-assets",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Play Store asset generation for the Voice Recorder app",
+  "scripts": {
+    "generate-icons": "node scripts/generate-icons.js"
+  },
+  "devDependencies": {
+    "@resvg/resvg-js": "^2.6.2",
+    "sharp": "^0.33.5"
+  }
+}

@@ -1,0 +1,20 @@
+*.iml
+.gradle
+.kotlin
+node_modules
+/local.properties
+/.idea
+.DS_Store
+/build
+/app/build
+/app/bin
+bin/
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+
+# Never commit signing keystores or Google service credentials
+*.jks
+*.keystore
+google-services.json
