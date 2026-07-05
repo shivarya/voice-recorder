@@ -17,4 +17,5 @@ local.properties
 # Never commit signing keystores or Google service credentials
 *.jks
 *.keystore
+keystore.properties
 google-services.json
