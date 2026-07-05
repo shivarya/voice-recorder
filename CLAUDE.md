@@ -4,6 +4,11 @@ A private, secure personal voice recorder for Android. Native Kotlin + Jetpack
 Compose (Material3), same toolchain as `clear-mic-router/` (AGP 8.7.3, Kotlin
 2.0.21, Gradle 8.14.3, compileSdk 35, minSdk 31, targetSdk 35, JDK 17).
 
+## Claude Code skills (`.claude/skills/`, load when launched inside `voice-recorder/`)
+- `voice-dev` — build the debug APK and install/launch it on a connected device/emulator.
+- `voice-release` — build the signed release APK/AAB, verify the signature, report the
+  signing SHA-1, and cover the keystore + Drive OAuth setup.
+
 ## What it does
 - **Background recording** — a microphone-typed foreground service keeps recording
   while the app is closed, the screen is off, and through Doze. Recording is split
