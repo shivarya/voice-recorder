@@ -18,7 +18,7 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.voicerecorder"
+        applicationId = "dev.shivarya.voicerecorder"
         minSdk = 31
         targetSdk = 35
         versionCode = 1

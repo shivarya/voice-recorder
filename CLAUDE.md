@@ -65,7 +65,8 @@ Firebase), but the OAuth client must exist:
    `https://www.googleapis.com/auth/drive.appdata`. While in "testing", add your
    Google account as a test user.
 3. Create an **OAuth client ID → Android**, with:
-   - package name `com.voicerecorder`
+   - package name `dev.shivarya.voicerecorder` (the `applicationId`; note the code
+     `namespace` stays `com.voicerecorder`)
    - the **SHA-1** of the signing key. Debug:
      `keytool -list -v -keystore "$env:USERPROFILE\.android\debug.keystore" -alias androiddebugkey -storepass android -keypass android`
      (use the release keystore's SHA-1 for release builds).
