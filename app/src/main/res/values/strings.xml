@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Recorder</string>
-    <string name="tile_label">Record</string>
-    <string name="shortcut_record_short">Record</string>
+    <string name="app_name">Clear Audio</string>
+    <string name="tile_label">Clear Audio</string>
+    <string name="shortcut_record_short">Clear Audio</string>
     <string name="shortcut_record_long">Start recording</string>
 </resources>

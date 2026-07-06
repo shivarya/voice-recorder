@@ -154,7 +154,7 @@ class RecordingService : LifecycleService() {
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
         )
         return Notification.Builder(this, CHANNEL_ID)
-            .setContentTitle("Recording")
+            .setContentTitle("Clear Audio")
             .setContentText(formatElapsed(elapsed))
             .setSmallIcon(R.drawable.ic_record_tile)
             .setOngoing(true)
@@ -167,8 +167,8 @@ class RecordingService : LifecycleService() {
     private fun createChannel() {
         val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val channel = NotificationChannel(
-            CHANNEL_ID, "Recording", NotificationManager.IMPORTANCE_LOW,
-        ).apply { description = "Shows while a voice recording is in progress" }
+            CHANNEL_ID, "Clear Audio", NotificationManager.IMPORTANCE_LOW,
+        ).apply { description = "Shows while a recording is in progress" }
         nm.createNotificationChannel(channel)
     }
 

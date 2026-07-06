@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.CloudDone
 import androidx.compose.material.icons.filled.CloudUpload
 import androidx.compose.material.icons.filled.Delete
@@ -25,11 +26,18 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -87,53 +95,141 @@ fun HomeScreen(
     onSetWifiOnly: (Boolean) -> Unit,
     onSetDeleteAfterUpload: (Boolean) -> Unit,
 ) {
-    Surface(Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-        LazyColumn(
-            Modifier.fillMaxSize().padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+    var selectedTab by rememberSaveable { mutableStateOf(0) }
+
+    Scaffold(
+        bottomBar = {
+            NavigationBar {
+                NavigationBarItem(
+                    selected = selectedTab == 0,
+                    onClick = { selectedTab = 0 },
+                    icon = { Icon(Icons.Filled.Mic, null) },
+                    label = { Text("Record") },
+                )
+                NavigationBarItem(
+                    selected = selectedTab == 1,
+                    onClick = { selectedTab = 1 },
+                    icon = { Icon(Icons.AutoMirrored.Filled.List, null) },
+                    label = { Text("Recordings") },
+                )
+            }
+        },
+    ) { innerPadding ->
+        Surface(
+            Modifier.fillMaxSize().padding(innerPadding),
+            color = MaterialTheme.colorScheme.background,
         ) {
-            item {
-                Text("Recorder", style = MaterialTheme.typography.headlineMedium)
-            }
-            item { RecordCard(recording, elapsedMs, onToggleRecord) }
-            item {
-                DriveCard(driveEmail, onSignIn, onSignOut, onSyncNow)
-            }
-            item {
-                SettingsCard(
-                    resumeOnBoot, autoStartOnOpen, autoUpload, wifiOnly, deleteAfterUpload,
-                    onSetResumeOnBoot, onSetAutoStartOnOpen, onSetAutoUpload, onSetWifiOnly, onSetDeleteAfterUpload,
+            if (selectedTab == 0) {
+                RecordTab(
+                    recording = recording,
+                    elapsedMs = elapsedMs,
+                    driveEmail = driveEmail,
+                    resumeOnBoot = resumeOnBoot,
+                    autoStartOnOpen = autoStartOnOpen,
+                    autoUpload = autoUpload,
+                    wifiOnly = wifiOnly,
+                    deleteAfterUpload = deleteAfterUpload,
+                    onToggleRecord = onToggleRecord,
+                    onSignIn = onSignIn,
+                    onSignOut = onSignOut,
+                    onSyncNow = onSyncNow,
+                    onSetResumeOnBoot = onSetResumeOnBoot,
+                    onSetAutoStartOnOpen = onSetAutoStartOnOpen,
+                    onSetAutoUpload = onSetAutoUpload,
+                    onSetWifiOnly = onSetWifiOnly,
+                    onSetDeleteAfterUpload = onSetDeleteAfterUpload,
+                )
+            } else {
+                RecordingsTab(
+                    recordings = recordings,
+                    playingName = playingName,
+                    onPlay = onPlay,
+                    onDelete = onDelete,
                 )
             }
-            item {
-                Text("Recordings", style = MaterialTheme.typography.titleMedium)
-            }
-            if (recordings.isEmpty()) {
-                item {
-                    Text(
-                        "No recordings yet.",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
-            }
-            items(recordings, key = { it.name }) { rec ->
-                RecordingRow(
-                    rec = rec,
-                    playing = rec.name == playingName,
-                    onPlay = { onPlay(rec) },
-                    onDelete = { onDelete(rec) },
-                )
-            }
+        }
+    }
+}
+
+@Composable
+private fun RecordTab(
+    recording: Boolean,
+    elapsedMs: Long,
+    driveEmail: String?,
+    resumeOnBoot: Boolean,
+    autoStartOnOpen: Boolean,
+    autoUpload: Boolean,
+    wifiOnly: Boolean,
+    deleteAfterUpload: Boolean,
+    onToggleRecord: () -> Unit,
+    onSignIn: () -> Unit,
+    onSignOut: () -> Unit,
+    onSyncNow: () -> Unit,
+    onSetResumeOnBoot: (Boolean) -> Unit,
+    onSetAutoStartOnOpen: (Boolean) -> Unit,
+    onSetAutoUpload: (Boolean) -> Unit,
+    onSetWifiOnly: (Boolean) -> Unit,
+    onSetDeleteAfterUpload: (Boolean) -> Unit,
+) {
+    LazyColumn(
+        Modifier.fillMaxSize().padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        item {
+            Text("Clear Audio", style = MaterialTheme.typography.headlineMedium)
+        }
+        item { RecordCard(recording, elapsedMs, onToggleRecord) }
+        item {
+            DriveCard(driveEmail, onSignIn, onSignOut, onSyncNow)
+        }
+        item {
+            SettingsCard(
+                resumeOnBoot, autoStartOnOpen, autoUpload, wifiOnly, deleteAfterUpload,
+                onSetResumeOnBoot, onSetAutoStartOnOpen, onSetAutoUpload, onSetWifiOnly, onSetDeleteAfterUpload,
+            )
+        }
+        item {
+            Text(
+                "For recording your own conversations and notes. Recording others " +
+                    "without consent may be illegal where you live.",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(top = 8.dp),
+            )
+        }
+    }
+}
+
+@Composable
+private fun RecordingsTab(
+    recordings: List<Recording>,
+    playingName: String?,
+    onPlay: (Recording) -> Unit,
+    onDelete: (Recording) -> Unit,
+) {
+    LazyColumn(
+        Modifier.fillMaxSize().padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        item {
+            Text("Recordings", style = MaterialTheme.typography.titleMedium)
+        }
+        if (recordings.isEmpty()) {
             item {
                 Text(
-                    "For recording your own conversations and notes. Recording others " +
-                        "without consent may be illegal where you live.",
-                    style = MaterialTheme.typography.labelSmall,
+                    "No recordings yet.",
+                    style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(top = 8.dp),
                 )
             }
+        }
+        items(recordings, key = { it.name }) { rec ->
+            RecordingRow(
+                rec = rec,
+                playing = rec.name == playingName,
+                onPlay = { onPlay(rec) },
+                onDelete = { onDelete(rec) },
+            )
         }
     }
 }

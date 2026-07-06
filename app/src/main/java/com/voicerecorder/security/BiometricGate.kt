@@ -42,7 +42,7 @@ object BiometricGate {
             },
         )
         val info = BiometricPrompt.PromptInfo.Builder()
-            .setTitle("Unlock Recorder")
+            .setTitle("Unlock Clear Audio")
             .setSubtitle("Verify it's you to view recordings")
             .setAllowedAuthenticators(AUTHENTICATORS)
             .build()

@@ -46,6 +46,6 @@ object DriveAuth {
             NetHttpTransport(),
             GsonFactory.getDefaultInstance(),
             credential,
-        ).setApplicationName("Recorder").build()
+        ).setApplicationName("Clear Audio").build()
     }
 }
